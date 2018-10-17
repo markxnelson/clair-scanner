@@ -1,0 +1,19 @@
+# Copyright 2018, Oracle Corporation and/or its affiliates. All rights reserved.
+#
+box: ubuntu
+
+build:
+  steps:
+    - script:
+      code: |
+        apt-get update 
+        apt-get install -y curl docker.io 
+        curl -L -O https://github.com/arminc/clair-scanner/releases/download/v8/clair-scanner_linux_amd64 
+        mv clair-scanner_linux_amd64 clair-scanner 
+        chmod +x clair-scanner 
+    - internal/docker-push:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        tag: "1.0"
+        repository: iad.ocir.io/odx-pipelines/wercker/clair-scanner
+        registry: https://iad.ocir.io/v2
